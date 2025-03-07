@@ -1,16 +1,35 @@
 import React, { useEffect, useState } from "react";
 import { View, FlatList, Text, TouchableOpacity, Alert, StyleSheet } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getUsers, deleteUser } from "../services/api";
 
 export default function ListUsersScreen({ route }) {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
-
-  const token = route.params.token; // Recebe token após login
+  const [token, setToken] = useState("");
 
   useEffect(() => {
-    loadUsers();
-  }, []);
+    const loadToken = async () => {
+      if (route?.params?.token) {
+        setToken(route.params.token);
+      } else {
+        const storedToken = await AsyncStorage.getItem("userToken");
+        if (storedToken) {
+          setToken(storedToken);
+        } else {
+          Alert.alert("Erro", "Token não encontrado. Faça login novamente.");
+        }
+      }
+    };
+
+    loadToken();
+  }, [route?.params?.token]);
+
+  useEffect(() => {
+    if (token) {
+      loadUsers();
+    }
+  }, [token]);
 
   const loadUsers = async () => {
     try {
@@ -24,7 +43,7 @@ export default function ListUsersScreen({ route }) {
   const confirmDelete = (userId, userName) => {
     Alert.alert("Confirmação", `Excluir usuário "${userName}"?`, [
       { text: "Cancelar" },
-      { 
+      {
         text: "Excluir",
         onPress: async () => {
           try {
@@ -34,7 +53,7 @@ export default function ListUsersScreen({ route }) {
           } catch (error) {
             Alert.alert("Erro", "Falha ao excluir usuário");
           }
-        } 
+        },
       },
     ]);
   };
@@ -42,37 +61,51 @@ export default function ListUsersScreen({ route }) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Lista de Usuários</Text>
-      
+
       <FlatList
         data={users}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <TouchableOpacity 
-            style={styles.userItem} 
-            onPress={() => setSelectedUser(selectedUser === item.id ? null : item.id)}
-          >
+          <View style={styles.userCard}>
             <Text style={styles.userName}>{item.name}</Text>
-            
-            {selectedUser === item.id && (
-              <TouchableOpacity 
-                style={styles.deleteButton}
-                onPress={() => confirmDelete(item.id, item.name)}
-              >
-                <Text style={styles.deleteButtonText}>Excluir Usuário</Text>
-              </TouchableOpacity>
-            )}
-          </TouchableOpacity>
+            <Text style={styles.userEmail}>{item.email}</Text>
+
+            <TouchableOpacity
+              style={styles.deleteButton}
+              onPress={() => confirmDelete(item.id, item.name)}
+            >
+              <Text style={styles.deleteButtonText}>Excluir Usuário</Text>
+            </TouchableOpacity>
+          </View>
         )}
       />
     </View>
   );
 }
 
+// 🔥 **Estilização baseada na paleta de cores**
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20 },
-  title: { fontSize: 24, fontWeight: "bold", marginBottom: 20, textAlign: "center" },
-  userItem: { padding: 15, borderRadius: 8, backgroundColor: "#f9f9f9", marginBottom: 10 },
-  userName: { fontSize: 16, fontWeight: "bold" },
-  deleteButton: { marginTop: 10, backgroundColor: "#f44336", padding: 10, borderRadius: 6 },
-  deleteButtonText: { color: "#fff", textAlign: "center" },
+  container: { flex: 1, padding: 20, backgroundColor: "#1f1f20" },
+  title: { fontSize: 24, fontWeight: "bold", color: "#dce0e6", marginBottom: 20, textAlign: "center" },
+  userCard: { 
+    backgroundColor: "#2b4c7e", 
+    padding: 15, 
+    borderRadius: 10, 
+    marginBottom: 10, 
+    shadowColor: "#000", 
+    shadowOffset: { width: 0, height: 2 }, 
+    shadowOpacity: 0.2, 
+    shadowRadius: 5, 
+    elevation: 5, 
+  },
+  userName: { fontSize: 18, fontWeight: "bold", color: "#dce0e6" },
+  userEmail: { fontSize: 14, color: "#dce0e6", marginBottom: 10 },
+  deleteButton: { 
+    backgroundColor: "#f44336", 
+    padding: 10, 
+    borderRadius: 6, 
+    alignItems: "center",
+  },
+  deleteButtonText: { color: "#fff", fontWeight: "bold" },
 });
+

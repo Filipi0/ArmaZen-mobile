@@ -1,11 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Alert } from "react-native";
-import { fetchProducts, updateProductQuantity } from "../services/productService";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  FlatList,
+  StyleSheet,
+  Alert,
+} from "react-native";
+import {
+  fetchProducts,
+  updateProductQuantity,
+} from "../services/productService";
 
 export default function MovimentarProdutoScreen() {
   const [search, setSearch] = useState("");
   const [products, setProducts] = useState([]);
-  const [modifiedProducts, setModifiedProducts] = useState({}); // 🔥 Armazena mudanças temporárias
+  const [modifiedProducts, setModifiedProducts] = useState({});
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -29,8 +40,10 @@ export default function MovimentarProdutoScreen() {
     setProducts((prevProducts) =>
       prevProducts.map((product) => {
         if (product.id === id) {
-          const newQuantity = action === "increment" ? product.quantity + 1 : Math.max(0, product.quantity - 1);
-
+          const newQuantity =
+            action === "increment"
+              ? product.quantity + 1
+              : Math.max(0, product.quantity - 1);
           return { ...product, quantity: newQuantity };
         }
         return product;
@@ -58,7 +71,7 @@ export default function MovimentarProdutoScreen() {
       }
 
       Alert.alert("Sucesso", "Alterações salvas com sucesso!");
-      loadProducts(); // Recarrega os produtos após salvar
+      loadProducts();
     } catch (error) {
       Alert.alert("Erro", error.message || "Falha ao salvar alterações");
     }
@@ -75,27 +88,37 @@ export default function MovimentarProdutoScreen() {
       <TextInput
         style={styles.input}
         placeholder="Pesquisar produto..."
+        placeholderTextColor="#dce0e6"
         value={search}
         onChangeText={setSearch}
       />
 
-      {loading ? <Text>Carregando produtos...</Text> : null}
+      {loading ? (
+        <Text style={styles.loadingText}>Carregando produtos...</Text>
+      ) : null}
 
       <FlatList
         data={filteredProducts}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <View style={styles.productItem}>
-            <Text style={styles.productText}>
-              {item.name} - {item.quantity} {item.unit}
+          <View style={styles.productCard}>
+            <Text style={styles.productName}>{item.name}</Text>
+            <Text style={styles.productDetails}>
+              {item.quantity} {item.unit} | {item.supplier}
             </Text>
 
             <View style={styles.buttonsContainer}>
-              <TouchableOpacity style={styles.incrementButton} onPress={() => handleChangeQuantity(item.id, "increment")}>
+              <TouchableOpacity
+                style={styles.incrementButton}
+                onPress={() => handleChangeQuantity(item.id, "increment")}
+              >
                 <Text style={styles.buttonText}>+</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.decrementButton} onPress={() => handleChangeQuantity(item.id, "decrement")}>
+              <TouchableOpacity
+                style={styles.decrementButton}
+                onPress={() => handleChangeQuantity(item.id, "decrement")}
+              >
                 <Text style={styles.buttonText}>-</Text>
               </TouchableOpacity>
             </View>
@@ -112,16 +135,73 @@ export default function MovimentarProdutoScreen() {
   );
 }
 
+// 🔥 **Estilização baseada na paleta de cores**
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: "#fff" },
-  title: { fontSize: 24, fontWeight: "bold", marginBottom: 10, textAlign: "center" },
-  input: { borderWidth: 1, padding: 10, marginBottom: 10, borderRadius: 8, borderColor: "#ccc" },
-  productItem: { flexDirection: "row", justifyContent: "space-between", padding: 10, borderBottomWidth: 1, borderColor: "#ddd" },
-  productText: { fontSize: 16 },
-  buttonsContainer: { flexDirection: "row", alignItems: "center" },
-  incrementButton: { backgroundColor: "#4caf50", padding: 10, borderRadius: 5, marginRight: 5 },
-  decrementButton: { backgroundColor: "#f44336", padding: 10, borderRadius: 5 },
+  container: { flex: 1, padding: 20, backgroundColor: "#1f1f20" },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#dce0e6",
+    marginBottom: 20,
+    marginTop: 20,
+    textAlign: "center",
+  },
+  input: {
+    backgroundColor: "#606d80",
+    color: "#dce0e6",
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 20,
+    width: "100%",
+    fontSize: 16,
+  },
+  loadingText: {
+    color: "#dce0e6",
+    fontSize: 16,
+    textAlign: "center",
+    marginVertical: 10,
+  },
+  productCard: {
+    backgroundColor: "#2b4c7e",
+    padding: 15,
+    borderRadius: 10,
+    marginBottom: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 5,
+  },
+  productName: { fontSize: 18, fontWeight: "bold", color: "#dce0e6" },
+  productDetails: { fontSize: 14, color: "#dce0e6", marginBottom: 10 },
+  buttonsContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: 10,
+  },
+  incrementButton: {
+    backgroundColor: "#4caf50",
+    padding: 10,
+    borderRadius: 5,
+    marginLeft: 250,
+    width: 50,
+    alignItems: "center",
+  },
+  decrementButton: {
+    backgroundColor: "#f44336",
+    padding: 10,
+    borderRadius: 5,
+    width: 50,
+    alignItems: "center",
+  },
   buttonText: { color: "#fff", fontSize: 16, fontWeight: "bold" },
-  saveButton: { backgroundColor: "#008CBA", padding: 14, borderRadius: 8, alignItems: "center", marginTop: 20 },
+  saveButton: {
+    backgroundColor: "#567ebb",
+    padding: 14,
+    borderRadius: 8,
+    alignItems: "center",
+    marginTop: 20,
+  },
   saveButtonText: { color: "#fff", fontWeight: "bold", fontSize: 16 },
 });

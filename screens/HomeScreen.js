@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, Alert, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Alert,
+  StyleSheet,
+  Image,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function HomeScreen({ navigation, route }) {
@@ -7,18 +14,16 @@ export default function HomeScreen({ navigation, route }) {
 
   useEffect(() => {
     const loadToken = async () => {
-      // Verifica se o token foi passado pela navegação
       if (route?.params?.token) {
         setToken(route.params.token);
-        await AsyncStorage.setItem("userToken", route.params.token); // Salva o token no AsyncStorage
+        await AsyncStorage.setItem("userToken", route.params.token);
       } else {
-        // Caso contrário, recupera do AsyncStorage
         const storedToken = await AsyncStorage.getItem("userToken");
         if (storedToken) {
           setToken(storedToken);
         } else {
           Alert.alert("Erro", "Token não encontrado. Faça login novamente.");
-          navigation.replace("Login"); // Redireciona para a tela de login
+          navigation.replace("Login");
         }
       }
     };
@@ -27,94 +32,61 @@ export default function HomeScreen({ navigation, route }) {
   }, [route?.params?.token]);
 
   const handleLogout = async () => {
-    await AsyncStorage.removeItem("userToken"); // Remove o token ao sair
+    await AsyncStorage.removeItem("userToken");
     Alert.alert("Logout", "Logout realizado com sucesso!");
-    navigation.replace("Login"); // Redireciona para a tela de login
+    navigation.replace("Login");
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Login realizado com sucesso!</Text>
+      {/*Conteúdo Principal */}
+      <View style={styles.content}>
+        <Text style={styles.welcomeText}>Bem-vindo ao ArmaZen!</Text>
+        <Text style={styles.subText}>Gerenciador de estoques.</Text>
+      </View>
 
-      {/* Botões para Usuários */}
-      <TouchableOpacity style={styles.navButton} onPress={() => navigation.navigate("RegisterUser", { token })}>
-        <Text style={styles.buttonText}>Cadastrar Usuário</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.navButton} onPress={() => navigation.navigate("ListUsers", { token })}>
-        <Text style={styles.buttonText}>Lista de Usuários</Text>
-      </TouchableOpacity>
-
-      {/* Botões para Produtos */}
-      <TouchableOpacity style={styles.navButton} onPress={() => navigation.navigate("CadastroProduto", { token })}>
-        <Text style={styles.buttonText}>Cadastrar Produto</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.navButton} onPress={() => navigation.navigate("ListaProdutos", { token })}>
-        <Text style={styles.buttonText}>Lista de Produtos</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.navButton} onPress={() => navigation.navigate("MovimentarProduto", { token })}>
-        <Text style={styles.buttonText}>Movimentar Produto</Text>
-      </TouchableOpacity>
-
-      {/* 🔥 Botão para Relatórios */}
-      <TouchableOpacity style={styles.reportButton} onPress={() => navigation.navigate("Relatorio", { token })}>
-        <Text style={styles.buttonText}>Relatórios</Text>
-      </TouchableOpacity>
-
+      {/*Botão de Logout */}
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-        <Text style={styles.buttonText}>Sair</Text>
+        <Text style={styles.buttonText}>Logout</Text>
       </TouchableOpacity>
     </View>
   );
 }
 
-// 🔥 **Certifique-se de que `styles` está definido corretamente no final!**
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
+  container: { flex: 1, backgroundColor: "#1f1f20" },
+  header: {
+    flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#fff",
-    padding: 20,
+    backgroundColor: "#2b4c7e",
+    paddingVertical: 15,
+    paddingHorizontal: 20,
   },
-  text: {
+  menuIcon: { width: 30, height: 30, tintColor: "#dce0e6" },
+  headerText: {
+    color: "#fff",
     fontSize: 20,
     fontWeight: "bold",
-    marginBottom: 20,
-    color: "#4caf50",
+    marginLeft: 15,
   },
-  navButton: {
-    backgroundColor: "#2196f3",
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderRadius: 10,
+  content: { flex: 1, justifyContent: "center", alignItems: "center" },
+  welcomeText: {
+    color: "#dce0e6",
+    fontSize: 24,
+    fontWeight: "bold",
     marginBottom: 10,
-    width: "80%",
-    alignItems: "center",
   },
-  reportButton: {
-    backgroundColor: "#ff9800", // Cor diferente para o botão de relatórios
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderRadius: 10,
-    marginBottom: 10,
-    width: "80%",
-    alignItems: "center",
-  },
+  subText: { color: "#606d80", fontSize: 16 },
   logoutButton: {
     backgroundColor: "#f44336",
     paddingHorizontal: 20,
     paddingVertical: 12,
     borderRadius: 10,
-    marginTop: 20,
-    width: "80%",
+    margin: 20,
     alignItems: "center",
+    alignSelf: "center",
+    width: "50%",
+    marginBottom: 60,
   },
-  buttonText: {
-    color: "#fff",
-    fontWeight: "bold",
-    fontSize: 16,
-  },
+  buttonText: { color: "#fff", fontWeight: "bold", fontSize: 16 },
 });

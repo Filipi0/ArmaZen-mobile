@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  StyleSheet,
+} from "react-native";
 import { login } from "../services/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -11,23 +18,27 @@ export default function LoginScreen({ navigation }) {
     try {
       const response = await login(email, password);
       const token = response.token;
-  
+
       await AsyncStorage.setItem("userToken", token);
-  
-      Alert.alert("Login realizado com sucesso!");
-      navigation.replace("Home"); // Redireciona para a HomeScreen
+
+      navigation.replace("MainApp"); // Redireciona para a HomeScreen
     } catch (error) {
-      Alert.alert("Erro", error.response?.data?.error || "Falha ao realizar login");
+      Alert.alert(
+        "Erro",
+        error.response?.data?.error || "Falha ao realizar login"
+      );
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
+      <Text style={styles.title}>Bem-vindo ao ArmaZen</Text>
+      <Text style={styles.subtitle}>Faça login para continuar</Text>
 
       <TextInput
         style={styles.input}
         placeholder="Email"
+        placeholderTextColor="#dce0e6"
         value={email}
         autoCapitalize="none"
         keyboardType="email-address"
@@ -37,6 +48,7 @@ export default function LoginScreen({ navigation }) {
       <TextInput
         style={styles.input}
         placeholder="Senha"
+        placeholderTextColor="#dce0e6"
         secureTextEntry
         value={password}
         onChangeText={setPassword}
@@ -49,10 +61,38 @@ export default function LoginScreen({ navigation }) {
   );
 }
 
+// 🔥 **Estilização baseada na paleta de cores**
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "center", padding: 20 },
-  title: { fontSize: 24, fontWeight: "bold", marginBottom: 20, textAlign: "center" },
-  input: { padding: 12, borderWidth: 1, borderColor: "#ccc", borderRadius: 8, marginBottom: 15 },
-  button: { backgroundColor: "#2196f3", padding: 15, borderRadius: 8, alignItems: "center" },
-  buttonText: { color: "#fff", fontSize: 16, fontWeight: "bold" },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#1f1f20",
+    padding: 0,
+  },
+  title: {
+    fontSize: 26,
+    fontWeight: "bold",
+    color: "#dce0e6",
+    marginBottom: 10,
+  },
+  subtitle: { fontSize: 16, color: "#dce0e6", marginBottom: 40 },
+  input: {
+    backgroundColor: "#606d80",
+    color: "#dce0e6",
+    borderRadius: 8,
+    padding: 15,
+    marginBottom: 10,
+    width: "80%",
+    fontSize: 16,
+  },
+  button: {
+    backgroundColor: "#2b4c7e",
+    padding: 14,
+    borderRadius: 8,
+    alignItems: "center",
+    width: "50%",
+    marginTop: 40,
+  },
+  buttonText: { color: "#dce0e6", fontWeight: "bold", fontSize: 16 },
 });

@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, ActivityIndicator, FlatList, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+} from "react-native";
 import { fetchStockDetails } from "../services/stockService";
 
 export default function RelatorioScreen() {
@@ -52,17 +59,22 @@ export default function RelatorioScreen() {
       {/* 🔹 Exibir detalhes da categoria selecionada */}
       {selectedCategory && (
         <View style={styles.detailContainer}>
-          <Text style={styles.detailTitle}>Detalhes: {categories.find(c => c.key === selectedCategory)?.label}</Text>
-          
+          <Text style={styles.detailTitle}>
+            Detalhes:{" "}
+            {categories.find((c) => c.key === selectedCategory)?.label}
+          </Text>
+
           {loading ? (
-            <ActivityIndicator size="large" color="#0000ff" />
+            <ActivityIndicator size="large" color="#dce0e6" />
           ) : (
             <FlatList
               data={details[selectedCategory]}
               keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => (
                 <View style={styles.detailItem}>
-                  <Text>{item.name} - {item.quantity} {item.unit}</Text>
+                  <Text style={styles.detailText}>
+                    {item.name} - {item.quantity} {item.unit}
+                  </Text>
                 </View>
               )}
               style={{ flexGrow: 1 }}
@@ -74,14 +86,48 @@ export default function RelatorioScreen() {
   );
 }
 
+// 🔥 **Estilização baseada na paleta de cores**
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: "#fff" },
-  title: { fontSize: 24, fontWeight: "bold", marginBottom: 20, textAlign: "center" },
-  cardsContainer: { marginBottom: 10 }, // 🔥 Envolve os cards para evitar erro
-  card: { backgroundColor: "#f1f1f1", padding: 15, borderRadius: 10, marginBottom: 10, alignItems: "center" },
-  cardTitle: { fontSize: 18, fontWeight: "bold" },
-  countText: { fontSize: 16, color: "#666", marginTop: 5 },
-  detailContainer: { flex: 1, marginTop: 20, padding: 15, backgroundColor: "#e6e6e6", borderRadius: 10 },
-  detailTitle: { fontSize: 20, fontWeight: "bold", marginBottom: 10 },
+  container: { flex: 1, padding: 20, backgroundColor: "#1f1f20" },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#dce0e6",
+    marginBottom: 20,
+    textAlign: "center",
+  },
+  cardsContainer: { marginBottom: 10 },
+  card: {
+    backgroundColor: "#2b4c7e",
+    padding: 15,
+    borderRadius: 10,
+    marginBottom: 10,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 5,
+  },
+  cardTitle: { fontSize: 18, fontWeight: "bold", color: "#dce0e6" },
+  countText: { fontSize: 16, color: "#dce0e6", marginTop: 5 },
+  detailContainer: {
+    flex: 1,
+    marginTop: 20,
+    padding: 15,
+    backgroundColor: "#567ebb",
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 5,
+  },
+  detailTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#dce0e6",    marginBottom: 10,
+  },
   detailItem: { padding: 10, borderBottomWidth: 1, borderColor: "#ccc" },
+  detailText: { fontSize: 16, color: "#dce0e6" },
 });

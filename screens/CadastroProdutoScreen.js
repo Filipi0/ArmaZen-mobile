@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, TextInput, TouchableOpacity, Text, Alert, StyleSheet } from "react-native";
+import {
+  View,
+  TextInput,
+  TouchableOpacity,
+  Text,
+  Alert,
+  StyleSheet,
+} from "react-native";
 import { createProduct } from "../services/productService";
 
 export default function CadastroProdutoScreen({ navigation }) {
@@ -11,7 +18,14 @@ export default function CadastroProdutoScreen({ navigation }) {
   const [expirationDate, setExpirationDate] = useState(""); // YYYY-MM-DD
 
   const handleRegister = async () => {
-    if (!itemType || !supplier || !name || !quantity || !unit || !expirationDate) {
+    if (
+      !itemType ||
+      !supplier ||
+      !name ||
+      !quantity ||
+      !unit ||
+      !expirationDate
+    ) {
       Alert.alert("Erro", "Preencha todos os campos corretamente!");
       return;
     }
@@ -23,10 +37,13 @@ export default function CadastroProdutoScreen({ navigation }) {
         name,
         quantity: parseInt(quantity),
         unit,
-        expirationDate, // Formato "YYYY-MM-DD"
+        expirationDate,
       });
 
-      Alert.alert("Sucesso", response.message || "Produto cadastrado com sucesso!");
+      Alert.alert(
+        "Sucesso",
+        response.message || "Produto cadastrado com sucesso!"
+      );
       setItemType("");
       setSupplier("");
       setName("");
@@ -42,12 +59,49 @@ export default function CadastroProdutoScreen({ navigation }) {
     <View style={styles.container}>
       <Text style={styles.title}>Cadastrar Produto</Text>
 
-      <TextInput placeholder="Tipo do Produto" value={itemType} onChangeText={setItemType} style={styles.input} />
-      <TextInput placeholder="Fornecedor" value={supplier} onChangeText={setSupplier} style={styles.input} />
-      <TextInput placeholder="Nome do Produto" value={name} onChangeText={setName} style={styles.input} />
-      <TextInput placeholder="Quantidade" value={quantity} onChangeText={setQuantity} keyboardType="numeric" style={styles.input} />
-      <TextInput placeholder="Unidade (ex: unidade, kg, litro)" value={unit} onChangeText={setUnit} style={styles.input} />
-      <TextInput placeholder="Data de Validade (YYYY-MM-DD)" value={expirationDate} onChangeText={setExpirationDate} style={styles.input} />
+      <TextInput
+        placeholder="Tipo do Produto"
+        placeholderTextColor="#dce0e6"
+        value={itemType}
+        onChangeText={setItemType}
+        style={styles.input}
+      />
+      <TextInput
+        placeholder="Fornecedor"
+        placeholderTextColor="#dce0e6"
+        value={supplier}
+        onChangeText={setSupplier}
+        style={styles.input}
+      />
+      <TextInput
+        placeholder="Nome do Produto"
+        placeholderTextColor="#dce0e6"
+        value={name}
+        onChangeText={setName}
+        style={styles.input}
+      />
+      <TextInput
+        placeholder="Quantidade"
+        placeholderTextColor="#dce0e6"
+        value={quantity}
+        onChangeText={setQuantity}
+        keyboardType="numeric"
+        style={styles.input}
+      />
+      <TextInput
+        placeholder="Unidade (ex: unidade, kg, litro)"
+        placeholderTextColor="#dce0e6"
+        value={unit}
+        onChangeText={setUnit}
+        style={styles.input}
+      />
+      <TextInput
+        placeholder="Data de Validade (YYYY-MM-DD)"
+        placeholderTextColor="#dce0e6"
+        value={expirationDate}
+        onChangeText={setExpirationDate}
+        style={styles.input}
+      />
 
       <TouchableOpacity style={styles.button} onPress={handleRegister}>
         <Text style={styles.buttonText}>Cadastrar Produto</Text>
@@ -56,10 +110,38 @@ export default function CadastroProdutoScreen({ navigation }) {
   );
 }
 
+// 🔥 **Estilização baseada na paleta de cores**
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, justifyContent: "center" },
-  title: { fontSize: 24, fontWeight: "bold", marginBottom: 20, textAlign: "center" },
-  input: { borderWidth: 1, padding: 12, marginBottom: 10, borderRadius: 8, borderColor: "#ccc" },
-  button: { backgroundColor: "#4caf50", padding: 14, borderRadius: 8, alignItems: "center", marginTop: 10 },
-  buttonText: { color: "#fff", fontWeight: "bold" },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#1f1f20",
+    padding: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#dce0e6",
+    marginBottom: 40,
+    textAlign: "center",
+  },
+  input: {
+    backgroundColor: "#606d80",
+    color: "#dce0e6",
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 10,
+    width: "80%",
+    fontSize: 16,
+  },
+  button: {
+    backgroundColor: "#2b4c7e",
+    padding: 14,
+    borderRadius: 8,
+    alignItems: "center",
+    width: "50%",
+    marginTop: 40,
+  },
+  buttonText: { color: "#dce0e6", fontWeight: "bold", fontSize: 16 },
 });
