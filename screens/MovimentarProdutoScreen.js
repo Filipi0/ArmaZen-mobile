@@ -18,6 +18,7 @@ export default function MovimentarProdutoScreen() {
   const [products, setProducts] = useState([]);
   const [modifiedProducts, setModifiedProducts] = useState({});
   const [loading, setLoading] = useState(false);
+  const [incrementInterval, setIncrementInterval] = useState(null); // 🔥 Para armazenar o loop
 
   useEffect(() => {
     loadProducts();
@@ -54,6 +55,23 @@ export default function MovimentarProdutoScreen() {
       ...prev,
       [id]: action === "increment" ? (prev[id] || 0) + 1 : (prev[id] || 0) - 1,
     }));
+  };
+
+  // 🔥 Função para iniciar o incremento/decremento contínuo
+  const startChange = (id, action) => {
+    handleChangeQuantity(id, action); // Executa a primeira vez imediatamente
+    const interval = setInterval(() => {
+      handleChangeQuantity(id, action);
+    }, 200); // Atualiza a cada 200ms
+    setIncrementInterval(interval);
+  };
+
+  // 🔥 Função para parar o incremento/decremento contínuo
+  const stopChange = () => {
+    if (incrementInterval) {
+      clearInterval(incrementInterval);
+      setIncrementInterval(null);
+    }
   };
 
   const handleSaveChanges = async () => {
@@ -110,14 +128,16 @@ export default function MovimentarProdutoScreen() {
             <View style={styles.buttonsContainer}>
               <TouchableOpacity
                 style={styles.incrementButton}
-                onPress={() => handleChangeQuantity(item.id, "increment")}
+                onPressIn={() => startChange(item.id, "increment")} // 🔥 Inicia ao pressionar
+                onPressOut={stopChange} // 🔥 Para ao soltar
               >
                 <Text style={styles.buttonText}>+</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
                 style={styles.decrementButton}
-                onPress={() => handleChangeQuantity(item.id, "decrement")}
+                onPressIn={() => startChange(item.id, "decrement")} // 🔥 Inicia ao pressionar
+                onPressOut={stopChange} // 🔥 Para ao soltar
               >
                 <Text style={styles.buttonText}>-</Text>
               </TouchableOpacity>
@@ -184,9 +204,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#4caf50",
     padding: 10,
     borderRadius: 5,
-    marginLeft: 250,
     width: 50,
     alignItems: "center",
+    marginLeft: 260,
   },
   decrementButton: {
     backgroundColor: "#f44336",

@@ -1,12 +1,6 @@
-import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ActivityIndicator,
-  FlatList,
-  StyleSheet,
-} from "react-native";
+import React, { useEffect, useState, useCallback } from "react";
+import { View, Text, TouchableOpacity, ActivityIndicator, FlatList, StyleSheet } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import { fetchStockDetails } from "../services/stockService";
 
 export default function RelatorioScreen() {
@@ -22,6 +16,14 @@ export default function RelatorioScreen() {
     { key: "untouched-this-month", label: "Itens não movimentados no mês" },
     { key: "most-moved-items", label: "Itens mais movimentados no mês" },
   ];
+
+  // 🔥 Atualiza automaticamente ao entrar na tela
+  useFocusEffect(
+    useCallback(() => {
+      setSelectedCategory(null);
+      setDetails({});
+    }, [])
+  );
 
   const loadStockDetails = async (categoryKey) => {
     setLoading(true);
@@ -60,8 +62,7 @@ export default function RelatorioScreen() {
       {selectedCategory && (
         <View style={styles.detailContainer}>
           <Text style={styles.detailTitle}>
-            Detalhes:{" "}
-            {categories.find((c) => c.key === selectedCategory)?.label}
+            Detalhes: {categories.find((c) => c.key === selectedCategory)?.label}
           </Text>
 
           {loading ? (
@@ -126,7 +127,8 @@ const styles = StyleSheet.create({
   detailTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#dce0e6",    marginBottom: 10,
+    color: "#dce0e6",
+    marginBottom: 10,
   },
   detailItem: { padding: 10, borderBottomWidth: 1, borderColor: "#ccc" },
   detailText: { fontSize: 16, color: "#dce0e6" },

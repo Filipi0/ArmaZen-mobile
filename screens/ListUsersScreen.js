@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, FlatList, Text, TouchableOpacity, Alert, StyleSheet } from "react-native";
+import {
+  View,
+  FlatList,
+  Text,
+  TouchableOpacity,
+  Alert,
+  StyleSheet,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getUsers, deleteUser } from "../services/api";
 
@@ -86,26 +93,33 @@ export default function ListUsersScreen({ route }) {
 // 🔥 **Estilização baseada na paleta de cores**
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, backgroundColor: "#1f1f20" },
-  title: { fontSize: 24, fontWeight: "bold", color: "#dce0e6", marginBottom: 20, textAlign: "center" },
-  userCard: { 
-    backgroundColor: "#2b4c7e", 
-    padding: 15, 
-    borderRadius: 10, 
-    marginBottom: 10, 
-    shadowColor: "#000", 
-    shadowOffset: { width: 0, height: 2 }, 
-    shadowOpacity: 0.2, 
-    shadowRadius: 5, 
-    elevation: 5, 
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#dce0e6",
+    marginBottom: 20,
+    textAlign: "center",
+  },
+  userCard: {
+    backgroundColor: "#2b4c7e",
+    padding: 15,
+    borderRadius: 10,
+    marginBottom: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 5,
   },
   userName: { fontSize: 18, fontWeight: "bold", color: "#dce0e6" },
   userEmail: { fontSize: 14, color: "#dce0e6", marginBottom: 10 },
-  deleteButton: { 
-    backgroundColor: "#f44336", 
-    padding: 10, 
-    borderRadius: 6, 
+  deleteButton: {
+    backgroundColor: "#dce0e6",
+    padding: 10,
+    borderRadius: 6,
     alignItems: "center",
+    width: "40%",
+    alignSelf: "flex-end",
   },
-  deleteButtonText: { color: "#fff", fontWeight: "bold" },
+  deleteButtonText: { color: "#606d80", fontWeight: "bold" },
 });
-

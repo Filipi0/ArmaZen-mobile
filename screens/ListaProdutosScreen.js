@@ -1,20 +1,17 @@
-import React, { useEffect, useState } from "react";
-import {
-  View,
-  FlatList,
-  Text,
-  TouchableOpacity,
-  Alert,
-  StyleSheet,
-} from "react-native";
+import React, { useEffect, useState, useCallback } from "react";
+import { View, FlatList, Text, TouchableOpacity, Alert, StyleSheet } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import { fetchProducts, deleteProduct } from "../services/productService";
 
 export default function ListaProdutosScreen() {
   const [products, setProducts] = useState([]);
 
-  useEffect(() => {
-    loadProducts();
-  }, []);
+  // 🔥 Atualiza os produtos sempre que a tela for focada
+  useFocusEffect(
+    useCallback(() => {
+      loadProducts();
+    }, [])
+  );
 
   const loadProducts = async () => {
     try {
@@ -99,8 +96,8 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 6,
     alignItems: "center",
-    width: "20%",
+    width: "30%",
     alignSelf: "flex-end",
   },
-  deleteButtonText: { color: "##606d80", fontWeight: "bold" },
+  deleteButtonText: { color: "#606d80", fontWeight: "bold" },
 });
