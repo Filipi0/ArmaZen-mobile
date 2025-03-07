@@ -6,9 +6,10 @@ import LoginScreen from "./screens/LoginScreen";
 import HomeScreen from "./screens/HomeScreen";
 import RegisterUserScreen from "./screens/RegisterUserScreen";
 import ListUsersScreen from "./screens/ListUsersScreen";
-import CadastroProdutoScreen from "./screens/CadastroProdutoScreen"; // 🔥 Nova tela
-import ListaProdutosScreen from "./screens/ListaProdutosScreen"; // 🔥 Nova tela
-import MovimentarProdutoScreen from "./screens/MovimentarProdutoScreen"; // 🔥 Nova tela
+import CadastroProdutoScreen from "./screens/CadastroProdutoScreen";
+import ListaProdutosScreen from "./screens/ListaProdutosScreen";
+import MovimentarProdutoScreen from "./screens/MovimentarProdutoScreen";
+import RelatorioScreen from "./screens/RelatorioScreen"; // 🔥 Nova tela
 
 const Stack = createStackNavigator();
 
@@ -23,6 +24,7 @@ export default function App() {
         <Stack.Screen name="CadastroProduto" component={CadastroProdutoScreen} options={{ title: "Cadastrar Produto" }} />
         <Stack.Screen name="ListaProdutos" component={ListaProdutosScreen} options={{ title: "Lista de Produtos" }} />
         <Stack.Screen name="MovimentarProduto" component={MovimentarProdutoScreen} options={{ title: "Movimentar Produto" }} />
+        <Stack.Screen name="Relatorio" component={RelatorioScreen} options={{ title: "Relatórios" }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

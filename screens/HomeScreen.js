@@ -58,6 +58,11 @@ export default function HomeScreen({ navigation, route }) {
         <Text style={styles.buttonText}>Movimentar Produto</Text>
       </TouchableOpacity>
 
+      {/* 🔥 Botão para Relatórios */}
+      <TouchableOpacity style={styles.reportButton} onPress={() => navigation.navigate("Relatorio", { token })}>
+        <Text style={styles.buttonText}>Relatórios</Text>
+      </TouchableOpacity>
+
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
         <Text style={styles.buttonText}>Sair</Text>
       </TouchableOpacity>
@@ -82,6 +87,15 @@ const styles = StyleSheet.create({
   },
   navButton: {
     backgroundColor: "#2196f3",
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 10,
+    marginBottom: 10,
+    width: "80%",
+    alignItems: "center",
+  },
+  reportButton: {
+    backgroundColor: "#ff9800", // Cor diferente para o botão de relatórios
     paddingHorizontal: 20,
     paddingVertical: 12,
     borderRadius: 10,

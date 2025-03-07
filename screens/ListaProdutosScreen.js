@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, FlatList, Text, TouchableOpacity, Alert, StyleSheet } from "react-native";
 import { fetchProducts, deleteProduct } from "../services/productService"; // 🔥 Importando do novo service
 
-export default function ListaProdutosScreen({ navigation }) {
+export default function ListaProdutosScreen({}) {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {

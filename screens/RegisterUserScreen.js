@@ -7,7 +7,7 @@ export default function RegisterUserScreen({ route }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
   
-    const token = route?.params?.token || ""; //  Evita erro caso `params` seja undefined
+    const token = route?.params?.token || "";
   
     const handleRegister = async () => {
         if (!name || !email || !password) {

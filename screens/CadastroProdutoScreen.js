@@ -21,7 +21,7 @@ export default function CadastroProdutoScreen({ navigation }) {
         itemType,
         supplier,
         name,
-        quantity: parseInt(quantity), // 🔥 Certifique-se de que é um número
+        quantity: parseInt(quantity),
         unit,
         expirationDate, // Formato "YYYY-MM-DD"
       });

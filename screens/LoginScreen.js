@@ -9,10 +9,10 @@ export default function LoginScreen({ navigation }) {
 
   const handleLogin = async () => {
     try {
-      const response = await login(email, password); // Chama a API de login
-      const token = response.token; // Obtém o token da resposta
+      const response = await login(email, password);
+      const token = response.token;
   
-      await AsyncStorage.setItem("userToken", token); // 🔥 Salva no AsyncStorage
+      await AsyncStorage.setItem("userToken", token);
   
       Alert.alert("Login realizado com sucesso!");
       navigation.replace("Home"); // Redireciona para a HomeScreen
