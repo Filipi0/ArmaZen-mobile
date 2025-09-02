@@ -197,8 +197,9 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "flex-end",
     marginTop: 10,
+    gap: 10,
   },
   incrementButton: {
     backgroundColor: "#4caf50",
@@ -206,7 +207,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     width: 50,
     alignItems: "center",
-    marginLeft: 260,
   },
   decrementButton: {
     backgroundColor: "#f44336",

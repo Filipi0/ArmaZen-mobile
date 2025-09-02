@@ -29,3 +29,31 @@ export const fetchStockDetails = async (filterType) => {
     throw new Error(error.response?.data?.error || `Erro ao buscar '${filterType}'`);
   }
 };
+
+// 📌 Registrar uma movimentação de estoque
+export const registrarMovimentacao = async (productId, quantity, movementType) => {
+  try {
+    const headers = await getAuthHeader();
+    const response = await api.post('/stock/move', {
+      productId,
+      quantity,
+      movementType
+    }, { headers });
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao registrar movimentação:', error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || 'Erro ao registrar movimentação');
+  }
+};
+
+// 📌 Buscar todas as movimentações de estoque
+export const buscarMovimentacoes = async () => {
+  try {
+    const headers = await getAuthHeader();
+    const response = await api.get('/stock/movements', { headers });
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao buscar movimentações:', error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || 'Erro ao buscar movimentações');
+  }
+};
